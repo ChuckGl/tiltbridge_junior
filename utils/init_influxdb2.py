@@ -9,7 +9,7 @@ INFLUXDB2_ORG = "brewhouse"
 INFLUXDB2_BUCKET = "fermenter"
 
 # Define variables for testing data insertion
-TILT_COLOR = "orange"
+TILT_COLOR = "Orange"
 NAME = "Test Beer"
 TEMP_FAHRENHEIT = 75.5
 TEMP_CELSIUS = 24.2
