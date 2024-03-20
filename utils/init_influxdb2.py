@@ -4,13 +4,13 @@ from influxdb_client.client.write_api import SYNCHRONOUS, WritePrecision
 
 # Define InfluxDB connection parameters
 INFLUXDB2_URL = "http://localhost:8086"
-INFLUXDB2_TOKEN = "SecretToken"
+INFLUXDB2_TOKEN = "ReplaceWithSecretInfluxDB2TokenForAccess"
 INFLUXDB2_ORG = "brewhouse"
 INFLUXDB2_BUCKET = "fermenter"
 
 # Define variables for testing data insertion
 TILT_COLOR = "Orange"
-NAME = "Test Beer"
+NAME = "Beer"
 TEMP_FAHRENHEIT = 75.5
 TEMP_CELSIUS = 24.2
 GRAVITY = 1.014
