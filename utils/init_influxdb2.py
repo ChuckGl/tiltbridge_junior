@@ -1,10 +1,11 @@
 from datetime import datetime
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS, WritePrecision
+from influxdb_client.rest import ApiException
 
 # Define InfluxDB connection parameters
 INFLUXDB2_URL = "http://localhost:8086"
-INFLUXDB2_TOKEN = "ReplaceWithSecretInfluxDB2TokenForAccess"
+INFLUXDB2_TOKEN = "SecretTokenToConnectToInfluxDB2"
 INFLUXDB2_ORG = "brewhouse"
 INFLUXDB2_BUCKET = "fermenter"
 
@@ -22,9 +23,18 @@ PLATO = 12.5
 # Create client
 client = InfluxDBClient(url=INFLUXDB2_URL, token=INFLUXDB2_TOKEN)
 
-# Create the "fermenter" bucket
-buckets_api = client.buckets_api()
-bucket = buckets_api.create_bucket(bucket_name=INFLUXDB2_BUCKET, org_id=INFLUXDB2_ORG)
+# Check if organization exists, create if not
+try:
+    org = client.organizations_api().find_organizations(org=INFLUXDB2_ORG)[0]
+except ApiException as e:
+    if e.status == 404:
+        org = client.organizations_api().create_organization(org=INFLUXDB2_ORG)
+    else:
+        raise
+
+# Check if bucket exists, create if not
+if client.buckets_api().find_bucket_by_name(INFLUXDB2_BUCKET) is None:
+    bucket = client.buckets_api().create_bucket(bucket_name=INFLUXDB2_BUCKET, org=INFLUXDB2_ORG)
 
 # Write data
 write_api = client.write_api(write_options=SYNCHRONOUS)
